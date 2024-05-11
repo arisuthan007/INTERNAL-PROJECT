@@ -1,0 +1,30 @@
+import mysql.connector 
+ 
+def connect_to_database(): try: 
+ connection = mysql.connector.connect( 
+ host="localhost", 
+user="username", password="password", 
+ database="databasename" 
+ ) 
+ return connection except 
+mysql.connector.Error as error: 
+ print("Failed to connect to MySQL:", error) 
+ 
+def add_person(connection, aadhaar_no, name, age, dob, blood_group, phone_no): 
+try: 
+ cursor = connection.cursor() sql_query = "INSERT INTO person_details 
+(aadhaar_no, name, age, dob, blood_group, 
+phone_no) VALUES (%s, %s, %s, %s, %s, %s)" 
+ data = (aadhaar_no, name, age, dob, blood_group, phone_no) 
+cursor.execute(sql_query, data) connection.commit() 
+print("Person details added successfully!") except mysql.connector.Error 
+as error: 
+ print("Failed to add person details:", error) 
+ 
+def search_person_by_aadhaar(connection, aadhaar_no): try: 
+ cursor = connection.cursor() sql_query = "SELECT * FROM 
+person_details WHERE aadhaar_no = %s" 
+cursor.execute(sql_query, (aadhaar_no,)) 
+result = cursor.fetchone() 
+if result: 
+ print("Person details found:"
